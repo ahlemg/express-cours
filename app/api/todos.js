@@ -1,7 +1,9 @@
 import express from "express";
-import {v4 as uuidv4} from "uuid";
+import uuid from "../helpers/uuid";
 
 import todos  from "../../data.js";
+import todoService from "../services/todo";
+import todo from "../services/todo";
 
 const router = express.Router();
 
@@ -20,18 +22,27 @@ router.get("/", (req,res) =>{
 
 });
 //add a  todo
-router.post("/", (req,res) =>{
-    const {userId, title} = req.body;
+router.post("/", async (req,res) =>{
+    const {userId, title, completed} = req.body;
     if(!userId||!title) return res.status(400).json({msg:"veuillez introduire les informations correctement"})
     const new_todo={
-        id: uuidv4(),
-        userId: parseInt(userId),
-        title,
-        completed: completed || false,
+        todoId: uuid({prefix: "TDO"}),
+        userId,
+        todo: title,
+        completed
     };
-    todos.push(new_todo)
+    //todos.push(new_todo)
     //res.status(201).json(new_todo);
-    res.redirect("/");
+    const create = await todoService.createTodo(new_todo);
+    console.log("create todo result::::",create);
+    if (!create) return res.status(500).json({msg:"Internal server error"});
+    res.status(201).json({
+        msg:"create with success",
+        new: create
+
+    })
+
+    //res.redirect("/");
 
 }); 
 

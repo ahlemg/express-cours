@@ -2,11 +2,14 @@ const express = require ("express");
 const path = require("path");
 import { engine } from 'express-handlebars';
 
+import "./config/database";
+
 require('dotenv').config();
 
 
 import logger from "./middleware/logger.js";
 import todosRouter from "./app/api/todos.js";
+import usersRouter from "./app/api/users.js";
 import todos from "./data.js";
 
 const app =  express();
@@ -34,6 +37,7 @@ app.use("/api/todos", logger);
 
 //init todos api router
 app.use("/api/todos", todosRouter);
+app.use("/api/users", usersRouter);
 
 
 //call midleware to set static folder
