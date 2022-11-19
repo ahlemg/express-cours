@@ -9,9 +9,11 @@ const create = (data, Model) => {
     });
 };
 
-const get = (id = null, Model) => {
+const get = (id = null, Model, populateFrom = null) => {
   if (id) {
     return Model.findById(id)
+      .populate(populateFrom ? populateFrom : "")
+
       .then((res) => res)
       .catch((err) => {
         console.log("ERROR==>services=>crud=>get:::", err);
@@ -19,6 +21,7 @@ const get = (id = null, Model) => {
       });
   } else {
     return Model.find()
+      .populate(populateFrom ? populateFrom : "")
       .then((res) => res)
       .catch((err) => {
         console.log("ERROR==>services=>crud=>get:::", err);
@@ -27,7 +30,30 @@ const get = (id = null, Model) => {
   }
 };
 
+const update = (id = null, data, Model) => {
+  return Model.findOneAndUpdate({ _id: id }, data, {
+    new: true,
+    useFindAndModify: false,
+  })
+    .then((res) => res)
+    .catch((err) => {
+      console.log("ERROR==>services=>model=>update:::", err);
+      return null;
+    });
+};
+
+const del = (id = null, Model) => {
+  return Model.deleteOne({ _id: id })
+    .then((res) => res)
+    .catch((err) => {
+      console.log("ERROR==>services=>model=>delete:::", err);
+      return null;
+    });
+};
+
 export default {
   create,
   get,
+  update,
+  del,
 };

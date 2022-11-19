@@ -10,21 +10,21 @@ export const getTodoById = async (req, res) => {
 };
 
 export const getAllTodos = async (req, res) => {
-  const todos = await crudService.get(null, Todo);
+  const todos = await crudService.get(null, Todo, "user");
   if (!todos) return res.status(500).json({ msg: "Internal server error" });
   res.status(200).json({ msg: "get with success", todos: todos });
 };
 
 export const addNewTodo = async (req, res) => {
-  const { userId, title } = req.body;
-  if (!userId || !title)
+  const { userId, todo } = req.body;
+  if (!userId || !todo)
     return res
       .status(400)
       .json({ msg: "veuillez introduire les informations correctement" });
   const new_todo = {
     todoId: uuid({ prefix: "TDO" }),
     user: userId,
-    todo: title,
+    todo: todo,
   };
   //todos.push(new_todo)
   //res.status(201).json(new_todo);
@@ -37,4 +37,31 @@ export const addNewTodo = async (req, res) => {
   });
 
   //res.redirect("/");
+};
+
+export const updateTodoById = async (req, res) => {
+  const todoId = req.params.id;
+  const todo = await Todo.findById(todoId);
+  if (!todo) {
+    return res.status(404).send("Not found");
+  }
+  const update = await crudService.update(todoId, req.body, Todo);
+  if (!update) return res.status(500).json({ msg: "Internal server error" });
+  res.status(200).json({
+    msg: "update with success",
+    new: update,
+  });
+};
+
+export const deleteTodoById = async (req, res) => {
+  const todoId = req.params.id;
+  const todo = await Todo.findById(todoId);
+  if (!todo) {
+    return res.status(404).send("Not found");
+  }
+  const del = await crudService.del(todoId, Todo);
+  if (!del) return res.status(500).json({ msg: "Internal server error" });
+  res.status(200).json({
+    msg: "delete with success",
+  });
 };

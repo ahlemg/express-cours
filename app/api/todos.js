@@ -6,7 +6,13 @@ import todoService from "../services/todo";
 import todo from "../services/todo";
 import Todo from "../models/todo";
 import crudService from "../services/crud";
-import { getTodoById, getAllTodos, addNewTodo } from "../controllers/todo";
+import {
+  getTodoById,
+  getAllTodos,
+  addNewTodo,
+  updateTodoById,
+  deleteTodoById,
+} from "../controllers/todo";
 
 const router = express.Router();
 
@@ -17,6 +23,13 @@ router.get("/:id", getTodoById);
 router.get("/", getAllTodos);
 //add a  todo
 router.post("/", addNewTodo);
+
+//update todo 
+router.put("/:id",updateTodoById)
+
+
+//delete todobyid
+router.delete("/:id",deleteTodoById)
 
 router.patch("/:id", (req, res) => {
   console.log(console.log(req.body));
