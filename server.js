@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 import { engine } from "express-handlebars";
+import { upload } from "./middleware/upload";
 
 import "./config/database";
 
@@ -38,6 +39,15 @@ app.use("/api/todos", logger);
 //init todos api router
 app.use("/api/todos", todosRouter);
 app.use("/api/users", usersRouter);
+
+// configure public and uploads
+app.use(express.static(__dirname + "/app/public"));
+app.use("/uploads", express.static("uploads"));
+
+// upload file
+app.post("/uploadfile", upload.single("image"), (req, res) => {
+  res.send("file uplaoded");
+});
 
 //call midleware to set static folder
 app.use(express.static(path.join(__dirname, "public")));
