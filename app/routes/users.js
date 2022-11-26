@@ -1,7 +1,6 @@
 import express from "express";
 
-import crudService from "../services/crud";
-import User from "../models/user";
+
 
 import {
   addNewUser,
@@ -12,13 +11,23 @@ import {
   addOneTodoToUser,
 } from "../controllers/user";
 
+import userValidator from "../validators/user";
+import {validate} from "../validators";
+import verifyToken from "../middleware/auth";
+
 const router = express.Router();
 
 //add user
-router.post("/", addNewUser);
+router.post("/", 
+
+userValidator.addNewUser
+,
+validate
+,
+addNewUser);
 
 // get all users
-router.get("/", getAllUsers);
+router.get("/",verifyToken, getAllUsers);
 
 // get single user
 router.get("/:id", getUserById);

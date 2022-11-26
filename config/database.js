@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const database_url = "localhost:27017";
-const database_name = "todoscours2";
+const database_name = "todoscours";
 const database_user = null;
 const database_password = null;
 

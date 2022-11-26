@@ -1,15 +1,16 @@
 const express = require("express");
 const path = require("path");
 import { engine } from "express-handlebars";
-import { upload } from "./middleware/upload";
+import { upload } from "./app/middleware/upload";
 
 import "./config/database";
 
 require("dotenv").config();
 
-import logger from "./middleware/logger.js";
-import todosRouter from "./app/api/todos.js";
-import usersRouter from "./app/api/users.js";
+import logger from "./app/middleware/logger.js";
+import todosRouter from "./app/routes/todos.js";
+import usersRouter from "./app/routes/users.js";
+import authRouter from "./app/routes/auth.js";
 import todos from "./data.js";
 
 const app = express();
@@ -39,6 +40,7 @@ app.use("/api/todos", logger);
 //init todos api router
 app.use("/api/todos", todosRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/auth", authRouter);
 
 // configure public and uploads
 app.use(express.static(__dirname + "/app/public"));

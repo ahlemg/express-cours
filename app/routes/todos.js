@@ -1,11 +1,7 @@
 import express from "express";
-import uuid from "../helpers/uuid";
 
 import todos from "../../data.js";
-import todoService from "../services/todo";
-import todo from "../services/todo";
-import Todo from "../models/todo";
-import crudService from "../services/crud";
+
 import {
   getTodoById,
   getAllTodos,
